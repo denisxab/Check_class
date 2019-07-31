@@ -4,56 +4,86 @@
 """
 Декоратор для проверки типов входящих переменных
 """
+import time
 
 
-def Check_class(iters=0, Reg=0):
+def Check_class(Reg=0):
     """
     from Check_class import Check_class
-    @Check_class({}) 
-    Reg - Отображать имена входящие в декоратор
+    @Check_class(1) 
+    def Entrance_VK(logins:str, passwords:str)-> True:
+        pass
+    Entrance_VK(123,'12312')
     """
     def actual_decorator(func):
         def decorator_function(*Items, **Dicts):
+            # 0.008 Длительность
+            
             if Reg:
-                """
-                Информация Reg = 1
-                """
-                for x in range(len(list(func.__name__))+7): #pylint: disable=W0612
-                    print('_', end='')
+                print('___________________________________')
+                print(f'Func_Name: {func.__name__}')
+                if Dicts:
+                    print('**Kargs: {}'.format([[x, type(x)]
+                                                for x in Dicts.values()]))
+                if Items:
+                    print('*Arg: {}'.format([[x, type(x)] for x in Items]))
 
-                print(f'\nFunc - {func.__name__}')
-                print(f'Variables - {Dicts}')
-                a = [type(x) for x in Dicts.values()]
-                print('Class - {}'.format(a))
+            value_function = func.__annotations__
+            if value_function.get('return'):  # отчистка от ->
+                value_function.pop('return')
 
-                for x in range(len(str(a))+8):
-                    print('_', end='')
-                print('\n', end='')
+            # Комбенированная проврека
 
-            if not iters:
-                return func(*Items, **Dicts)
+            if Items:
+                # Если значения переданы без присваивания
+                # fanc(login,password_VK)
+                test_Gen_Items = [x for x in zip(
+                    value_function.keys(), Items, value_function.values())]
+                for x in test_Gen_Items:
+                    if not isinstance(x[1], x[2]):
+                        raise Exception(f'\n\n*Args-| {x[0]} != {x[2]}\n')
 
-            if not Dicts:
-                return func(*Items, **Dicts)
+            if Dicts:
+                # Если присваиваться значение
+                # fanc(passwords=password_VK)
+                test_Gen_Dicts = [list(x)+[value_function.get(x[0])]
+                                  for x in zip(Dicts.keys(), Dicts.values())]
+                for x in test_Gen_Dicts:
+                    if not isinstance(x[1], x[2]):
+                        raise Exception(f'\n\n**Kargs-| {x[0]} != {x[2]}\n')
 
-            for name_variable in Dicts:
-                if name_variable in iters:
-                    if not isinstance(Dicts[name_variable], iters[name_variable]):
-                        raise Exception(False, {'Error Type': (
-                            name_variable, Dicts[name_variable], iters[name_variable])})
-
+            if Reg:
+                start = time.time()
+                func_Time = func(*Items, **Dicts)
+                print('Time: {} секунд.'.format(time.time()-start))
+                print('-----------------------------------')
+                return func_Time
             return func(*Items, **Dicts)
-
         return decorator_function
     return actual_decorator
 
 
 """
+
 # print(iters) # Значения переданные в Декоратор !
 # print(func) # Основная функций после декоратора
 # print(Items) # Значения переданные в Функцию ! => tuple
 # print(Dicts) # Значения переданные в Функцию ! => dict
 # print(*Dicts) # Значения переданные в Функцию ! => dict
+
+    #     print(dir(func))
+    #     print(func.__annotations__)# описание def Audio_VK(vk_sessions:vk_api.vk_api.VkApi):
+    #     #print(func.__name__)# имя функции
+    #     #print(func.__kwdefaults__)# все стандартные значения  функции
+    #     #print(func.__globals__)#  Словарь, определяющий глобальное пространство имен
+    #     #print(dir(func.__eq__))#?
+    #     #print(func.__doc__)# Строка документирования
+    #     #print(func.__dict__)# Словарь, содержащий атрибуты функции
+    #     #print(dir(func.__delattr__))# ?
+    #     #print(func.__defaults__) # Кортеж с аргументами по умолчанию
+    #     #print(dir(func.__code__))# не надо
+    #     #print(func.__class__)# прсто класс
+    #     #print(dir(func.__call__)) # ?
 
 Декоратор для проверки типов входящих переменных
 
