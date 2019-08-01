@@ -7,16 +7,17 @@
 Декоратор для проверки типов входящих переменных
 """
 import time
+import sys
 
+"""
+from Check_class import Check_class
+@Check_class(1) 
+def Entrance_VK(logins:str, passwords:str)-> True:
+    pass
+Entrance_VK(123,'12312')
+"""
 
 def Check_class(Reg=0):
-    """
-    from Check_class import Check_class
-    @Check_class(1) 
-    def Entrance_VK(logins:str, passwords:str)-> True:
-        pass
-    Entrance_VK(123,'12312')
-    """
     def actual_decorator(func):
         def decorator_function(*Items, **Dicts):
             """
@@ -29,10 +30,11 @@ def Check_class(Reg=0):
                 print(f'Func_Name: {func.__name__}')
 
                 if Dicts:
-                    print('**Kargs: {}'.format([[x, type(x)]
+                    print('**Kargs: {}'.format(['{0}|=|{1}|=|{2}-Байт'.format(x, type(x), sys.getsizeof(x))
                                                 for x in Dicts.values()]))
                 if Items:
-                    print('*Arg: {}'.format([[x, type(x)] for x in Items]))
+                    print(
+                        '*Arg: {}'.format(['{0}|=|{1}|=|{2}-Байт'.format(x, type(x), sys.getsizeof(x)) for x in Items]))
 
             value_function = func.__annotations__
             if value_function.get('return'):  # отчистка от ->
@@ -60,6 +62,7 @@ def Check_class(Reg=0):
                 print('Time: {} секунд.'.format(time.time()-start))
                 print('-----------------------------------')
                 return func_Time
+
             return func(*Items, **Dicts)
         return decorator_function
     return actual_decorator
