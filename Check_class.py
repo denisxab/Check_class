@@ -11,10 +11,8 @@ def Entrance_VK(logins:str, li:None,passwords:None)-> True:
 Entrance_VK(123,[],'12312')
 """
 
-
 import time
 import sys
-
 
 def Check_class(Reg=0):
     """
@@ -26,36 +24,44 @@ def Check_class(Reg=0):
             Комбенированная проврека
             0.003 Длительность проверки
             """
-
             def statistics(reg):
+                """
+                Информация
+                """
                 if reg == 0:
-                    print('______________________________________________________________________')
+                    print(
+                        '______________________________________________________________________')
                     print(f'Name: {func.__name__}')
 
                     if Dicts:
                         print('**Kargs:')
-                        for x in enumerate(['{0} |=| {1} |=|{2}Бт'.format(''.join(list(str(x).ljust(35))[:35].ljust(10)),
+                        for x in enumerate(['{0} |=| {1} |=|{2}Бт'.format(str(x)[:35].ljust(35),
                                                                           type(
-                                x).__name__.ljust(7),
+                                x).__name__[:7].center(7),
                                 sys.getsizeof(x)) for x in Dicts.values()]):
                             print(f'{x[0]}=> : {x[1]}')
 
                     if Items:
                         print('*Arg:')
-                        for x in enumerate(['{0} |=| {1} |=|{2}Бт'.format(''.join(list(str(x).ljust(35))[:35]),
+                        for x in enumerate(['{0} |=| {1} |=|{2}Бт'.format(str(x)[:35].ljust(35),
                                                                           type(
-                                x).__name__.ljust(7),
+                                x).__name__[:7].center(7),
                                 sys.getsizeof(x)) for x in Items]):
                             print(f'{x[0]}=> : {x[1]}')
 
                 if reg == 1:
                     start = time.time()
-                    func_Time = func(*Items, **Dicts)
-                    print('>>> : {0} |=| {1} |=|{2}Бт'.format(''.join(list(str(func_Time).ljust(35))[
-                          :35]), type(func_Time).__name__.ljust(7), sys.getsizeof(func_Time)))
                     print(
-                        'Time: {1} |=| {0}сек.'.format(time.time()-start, func.__name__.ljust(35)))
-                    print('----------------------------------------------------------------------')
+                        '\\-  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  - /')
+                    func_Time = func(*Items, **Dicts)
+                    print(
+                        '/-  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  - \\')
+
+                    print('>>> : {0} |=| {1} |=|{2}Бт'.format(str(func_Time)[:35].ljust(35), type(func_Time).__name__[:7].center(7), sys.getsizeof(func_Time)))
+                    print(
+                        'Time: {0} |=| {1} |=|Сек '.format(func.__name__.ljust(35),str(time.time()-start)[:7].center(7)))
+                    print(
+                        '----------------------------------------------------------------------')
 
                     return func_Time
 
