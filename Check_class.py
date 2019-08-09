@@ -15,9 +15,10 @@ import time
 import sys
 
 def Check_class(Reg=0):
-    """
+    """s
     Декоратор для проверки типов входящих переменных
     """
+    
     def actual_decorator(func):
         def decorator_function(*Items, **Dicts):
             """
@@ -59,7 +60,7 @@ def Check_class(Reg=0):
 
                     print('>>> : {0} |=| {1} |=|{2}Бт'.format(str(func_Time)[:35].ljust(35), type(func_Time).__name__[:7].center(7), sys.getsizeof(func_Time)))
                     print(
-                        'Time: {0} |=| {1} |=|Сек '.format(func.__name__.ljust(35),str(time.time()-start)[:7].center(7)))
+                        'Time: {0}.Сек |=| {1} '.format(str(time.time()-start).ljust(31),func.__name__.ljust(7)))
                     print(
                         '----------------------------------------------------------------------')
 
