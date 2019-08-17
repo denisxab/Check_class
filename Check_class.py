@@ -15,7 +15,7 @@ import time
 import sys
 
 def Check_class(Reg=0):
-    """s
+    """
     Декоратор для проверки типов входящих переменных
     """
     
